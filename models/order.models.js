@@ -27,10 +27,10 @@ let orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "client",
     },
-    // currency_type_id: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: ""
-    // },
+    currency_type_id: {
+      type: Schema.Types.ObjectId,
+      ref: "currency_type",
+    },
   },
   {
     timeseries: true,
