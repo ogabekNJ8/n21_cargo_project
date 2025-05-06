@@ -39,10 +39,23 @@ async function update(req, res) {
   let { id } = req.params;
   let data = req.body;
   try {
-    let updateAdmin = await adminModel.findByIdAndUpdate(id, data, {
-      new: true,
-    });
-    res.status(200).send({ data: updateAdmin });
+    let updated = await adminModel.findByIdAndUpdate(id, data, { new: true });
+    res.status(200).send({ data: updated });
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+async function pushOrder(req, res) {
+  let { id } = req.params;
+  let { orderId } = req.body;
+  try {
+    let updated = await adminModel.findByIdAndUpdate(
+      id,
+      { $push: { orders: orderId } },
+      { new: true }
+    );
+    res.status(200).send({ data: updated });
   } catch (error) {
     console.log(error.message);
   }
@@ -52,10 +65,10 @@ async function remove(req, res) {
   let { id } = req.params;
   try {
     await adminModel.findByIdAndDelete(id);
-    res.status(201).send({ message: "Deleted admin" });
+    res.status(200).send({ message: "Deleted admin" });
   } catch (error) {
     console.log(error.message);
   }
 }
 
-module.exports = { findAll, findOne, create, update, remove };
+module.exports = { findAll, findOne, create, update, pushOrder, remove };

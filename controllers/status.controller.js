@@ -39,10 +39,8 @@ async function update(req, res) {
   let { id } = req.params;
   let data = req.body;
   try {
-    let updateStatus = await statusModel.findByIdAndUpdate(id, data, {
-      new: true,
-    });
-    res.status(200).send({ data: updateStatus });
+    let updated = await statusModel.findByIdAndUpdate(id, data, { new: true });
+    res.status(200).send({ data: updated });
   } catch (error) {
     console.log(error.message);
   }
@@ -52,7 +50,7 @@ async function remove(req, res) {
   let { id } = req.params;
   try {
     await statusModel.findByIdAndDelete(id);
-    res.status(201).send({ message: "Deleted status" });
+    res.status(200).send({ message: "Deleted status" });
   } catch (error) {
     console.log(error.message);
   }

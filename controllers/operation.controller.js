@@ -7,6 +7,7 @@ async function findAll(req, res) {
     offset = offset ? offset : 1;
     let operations = await operationModel
       .find({})
+      .populate("orderId")
       .limit(limit)
       .skip((offset - 1) * limit);
     res.status(200).send({ data: operations });
@@ -18,7 +19,7 @@ async function findAll(req, res) {
 async function findOne(req, res) {
   let { id } = req.params;
   try {
-    let operation = await operationModel.findById(id);
+    let operation = await operationModel.findById(id).populate("orderId");
     res.status(200).send({ data: operation });
   } catch (error) {
     console.log(error.message);
@@ -39,10 +40,10 @@ async function update(req, res) {
   let { id } = req.params;
   let data = req.body;
   try {
-    let updateOperation = await operationModel.findByIdAndUpdate(id, data, {
+    let updated = await operationModel.findByIdAndUpdate(id, data, {
       new: true,
     });
-    res.status(200).send({ data: updateOperation });
+    res.status(200).send({ data: updated });
   } catch (error) {
     console.log(error.message);
   }
@@ -52,7 +53,7 @@ async function remove(req, res) {
   let { id } = req.params;
   try {
     await operationModel.findByIdAndDelete(id);
-    res.status(201).send({ message: "Deleted operation" });
+    res.status(200).send({ message: "Deleted operation" });
   } catch (error) {
     console.log(error.message);
   }

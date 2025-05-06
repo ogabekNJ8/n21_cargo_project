@@ -7,6 +7,10 @@ async function findAll(req, res) {
     offset = offset ? offset : 1;
     let orders = await orderModel
       .find({})
+      .populate("clientId")
+      .populate("adminId")
+      .populate("currencyTypeId")
+      .populate("statusId")
       .limit(limit)
       .skip((offset - 1) * limit);
     res.status(200).send({ data: orders });
@@ -18,7 +22,12 @@ async function findAll(req, res) {
 async function findOne(req, res) {
   let { id } = req.params;
   try {
-    let order = await orderModel.findById(id);
+    let order = await orderModel
+      .findById(id)
+      .populate("clientId")
+      .populate("adminId")
+      .populate("currencyTypeId")
+      .populate("statusId");
     res.status(200).send({ data: order });
   } catch (error) {
     console.log(error.message);
@@ -39,10 +48,8 @@ async function update(req, res) {
   let { id } = req.params;
   let data = req.body;
   try {
-    let updateOrder = await orderModel.findByIdAndUpdate(id, data, {
-      new: true,
-    });
-    res.status(200).send({ data: updateOrder });
+    let updated = await orderModel.findByIdAndUpdate(id, data, { new: true });
+    res.status(200).send({ data: updated });
   } catch (error) {
     console.log(error.message);
   }
@@ -52,7 +59,7 @@ async function remove(req, res) {
   let { id } = req.params;
   try {
     await orderModel.findByIdAndDelete(id);
-    res.status(201).send({ message: "Deleted order" });
+    res.status(200).send({ message: "Deleted order" });
   } catch (error) {
     console.log(error.message);
   }
