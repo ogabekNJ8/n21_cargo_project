@@ -5,12 +5,10 @@ async function findAll(req, res) {
   try {
     limit = limit ? limit : 10;
     offset = offset ? offset : 1;
-
     let clients = await clientModel
       .find({})
       .limit(limit)
       .skip((offset - 1) * limit);
-
     res.status(200).send({ data: clients });
   } catch (error) {
     console.log(error.message);
@@ -41,7 +39,9 @@ async function update(req, res) {
   let { id } = req.params;
   let data = req.body;
   try {
-    let updateClient = await clientModel.findByIdAndUpdate(id, data);
+    let updateClient = await clientModel.findByIdAndUpdate(id, data, {
+      new: true,
+    });
     res.status(200).send({ data: updateClient });
   } catch (error) {
     console.log(error.message);
@@ -58,10 +58,4 @@ async function remove(req, res) {
   }
 }
 
-module.exports = {
-  findAll,
-  findOne,
-  create,
-  update,
-  remove,
-};
+module.exports = { findAll, findOne, create, update, remove };

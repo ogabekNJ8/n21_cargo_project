@@ -1,15 +1,15 @@
-const orderModel = require("../models/order.models");
+const statusModel = require("../models/status.models");
 
 async function findAll(req, res) {
   let { limit, offset } = req.query;
   try {
     limit = limit ? limit : 10;
     offset = offset ? offset : 1;
-    let orders = await orderModel
+    let statuses = await statusModel
       .find({})
       .limit(limit)
       .skip((offset - 1) * limit);
-    res.status(200).send({ data: orders });
+    res.status(200).send({ data: statuses });
   } catch (error) {
     console.log(error.message);
   }
@@ -18,8 +18,8 @@ async function findAll(req, res) {
 async function findOne(req, res) {
   let { id } = req.params;
   try {
-    let order = await orderModel.findById(id);
-    res.status(200).send({ data: order });
+    let status = await statusModel.findById(id);
+    res.status(200).send({ data: status });
   } catch (error) {
     console.log(error.message);
   }
@@ -28,8 +28,8 @@ async function findOne(req, res) {
 async function create(req, res) {
   let data = req.body;
   try {
-    let order = await orderModel.create(data);
-    res.status(201).send({ data: order });
+    let status = await statusModel.create(data);
+    res.status(201).send({ data: status });
   } catch (error) {
     console.log(error.message);
   }
@@ -39,10 +39,10 @@ async function update(req, res) {
   let { id } = req.params;
   let data = req.body;
   try {
-    let updateOrder = await orderModel.findByIdAndUpdate(id, data, {
+    let updateStatus = await statusModel.findByIdAndUpdate(id, data, {
       new: true,
     });
-    res.status(200).send({ data: updateOrder });
+    res.status(200).send({ data: updateStatus });
   } catch (error) {
     console.log(error.message);
   }
@@ -51,8 +51,8 @@ async function update(req, res) {
 async function remove(req, res) {
   let { id } = req.params;
   try {
-    await orderModel.findByIdAndDelete(id);
-    res.status(201).send({ message: "Deleted order" });
+    await statusModel.findByIdAndDelete(id);
+    res.status(201).send({ message: "Deleted status" });
   } catch (error) {
     console.log(error.message);
   }

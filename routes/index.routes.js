@@ -1,13 +1,17 @@
-const { Router } = require("express");
+const router = require("express").Router();
 
 const clientRoutes = require("./client.routes");
 const orderRoutes = require("./order.routes");
-const currencyTypeRoutes = require("./currencyType.routes");
+const adminRoutes = require("./admin.routes");
+const currencyTypeRoutes = require("./currency_type.routes");
+const statusRoutes = require("./status.routes");
+const operationRoutes = require("./operation.routes");
 
-const router = Router();
-
-router.use("/clients", clientRoutes);
-router.use("/orders", orderRoutes);
-router.use("/currency_types", currencyTypeRoutes);
+router.use("/client", clientRoutes);
+router.use("/order", orderRoutes);
+router.use("/admin", adminRoutes);
+router.use("/currency-type", currencyTypeRoutes);
+router.use("/status", statusRoutes);
+router.use("/operation", operationRoutes);
 
 module.exports = router;

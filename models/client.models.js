@@ -2,23 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const clientSchema = new Schema(
   {
-    full_name: {
-      type: String,
-      required: [true, "Full name is required"],
-    },
-    phone_number: {
-      type: String,
-      required: [true, "Phone number is required"],
-      maxLength: [15, "Max length is 15"],
-    },
-    address: {
-      type: String,
-      required: [true, "Address is required"],
-    },
-    location: {
-      type: String,
-      required: [true, "Location is required"],
-    },
+    full_name: { type: String, required: true },
+    phone_number: { type: String, required: true, maxLength: 15 },
+    address: { type: String, required: true },
+    location: { type: String, required: true },
     email: {
       type: String,
       match: [
@@ -26,17 +13,9 @@ const clientSchema = new Schema(
         "Please enter a valid email address",
       ],
     },
-    orders: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "order"
-      },
-    ],
+    orders: [{ type: Schema.Types.ObjectId, ref: "order" }],
   },
-  {
-    timeseries: true,
-    versionKey: false,
-  }
+  { timestamps: true, versionKey: false }
 );
 
 const clientModel = model("client", clientSchema);

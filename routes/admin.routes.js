@@ -6,7 +6,7 @@ const {
   findOne,
   update,
   remove,
-} = require("../controllers/currencyType.controller");
+} = require("../controllers/admin.controller");
 
 router.get("/", findAll);
 router.post("/", create);
