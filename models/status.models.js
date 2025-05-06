@@ -1,13 +1,16 @@
 const { Schema, model } = require("mongoose");
 
-const statusSchema = new Schema(
-  {
-    name: { type: String, required: true },
-    description: { type: String, required: true },
+const StatusSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
   },
-  { timestamps: true, versionKey: false }
-);
+  description: {
+    type: String,
+    maxlength: [100, "Izoh 100 belgidan oshmasligi kerak"],
+  },
+});
 
-const statusModel = model("status", statusSchema);
+const Status = model("Status", StatusSchema);
 
-module.exports = statusModel;
+module.exports = Status;

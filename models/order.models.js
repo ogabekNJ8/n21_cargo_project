@@ -1,24 +1,49 @@
 const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
-const orderSchema = new Schema(
-  {
-    order_unique_id: { type: String, required: true },
-    client_id: { type: Schema.Types.ObjectId, ref: "client", required: true },
-    product_link: { type: String, required: true },
-    quantity: { type: Number, required: true },
-    summa: { type: Schema.Types.Decimal128, required: true },
-    currency_type_id: {
-      type: Schema.Types.ObjectId,
-      ref: "currency_type",
-      required: true,
-    },
-    truck: { type: String, required: true },
-    description: { type: String, required: true },
-    operations: [{ type: Schema.Types.ObjectId, ref: "operation" }],
+const OrderSchema = new Schema({
+  order_unique_id: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
   },
-  { timestamps: true, versionKey: false }
-);
+  client_id: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Client",
+    required: [true, "Client tanlanishi shart"],
+  },
+  product_link: {
+    type: String,
+    required: false,
+    validate: {
+      validator: function (v) {
+        return !v || /^(http|https):\/\/[^ "]+$/.test(v);
+      },
+      message: (props) => `"${props.value}" noto'g'ri URL formatida`,
+    },
+  },
+  quantity: {
+    type: Number,
+    min: [1, "Miqdor kamida 1 bo'lishi kerak"],
+    required: [true, "Miqdor ko'rsatilishi shart"],
+  },
+  summa: {
+    type: mongoose.Types.Decimal128,
+    required: [true, "Summa ko'rsatilishi shart"],
+  },
+  currency_type_id: {
+    type: mongoose.Schema.ObjectId,
+    ref: "CurrencyType",
+    required: true,
+  },
+  truck: { type: String },
+  description: {
+    type: String,
+    maxlength: [500, "Izoh 500 belgidan oshmasligi kerak"],
+  },
+});
 
-const orderModel = model("order", orderSchema);
+const Order = model("Order", OrderSchema);
 
-module.exports = orderModel;
+module.exports = Order;

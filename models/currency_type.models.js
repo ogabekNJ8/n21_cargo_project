@@ -1,13 +1,19 @@
 const { Schema, model } = require("mongoose");
 
-const currencyTypeSchema = new Schema(
-  {
-    name: { type: String, required: true },
-    description: { type: String, required: true },
+const CurrencyTypeSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: [2, "Valyuta nomi kamida 2 ta belgi bo'lsin"],
+    maxlength: [10, "Valyuta nomi 10 belgidan oshmasligi kerak"],
   },
-  { timestamps: true, versionKey: false }
-);
+  description: {
+    type: String,
+    maxlength: [100, "Izoh 100 belgidan oshmasligi kerak"],
+  },
+});
 
-const currencyTypeModel = model("currency_type", currencyTypeSchema);
+const CurrencyType = model("CurrencyType", CurrencyTypeSchema);
 
-module.exports = currencyTypeModel;
+module.exports = CurrencyType;
